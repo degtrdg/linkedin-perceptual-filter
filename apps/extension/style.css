@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Target all possible root elements */
+:root,
+html,
+body,
+#__plasmo,
+#plasmo-shadow-container,
+.plasmo-csui-container {
+  margin: 0 !important;
+  padding: 0 !important;
+  /* Removed border-radius: 12px !important; */
+  overflow: hidden !important;
+  background: transparent !important;
+}
+
+/* Additional fix for Chrome extension popup */
+@media (prefers-color-scheme: light), (prefers-color-scheme: dark) {
+  .plasmo-csui-container,
+  #plasmo-shadow-container {
+    background: transparent !important;
+  }
+}

@@ -27,8 +27,18 @@
     "typescript": "5.3.3"
   },
   "manifest": {
+    "manifest_version": 3,
+    "permissions": [
+      "storage",
+      "scripting",
+      "activeTab"
+    ],
     "host_permissions": [
-      "https://*/*"
-    ]
+      "https://*.linkedin.com/*"
+    ],
+    "background": {
+      "service_worker": "background/index.ts",
+      "type": "module"
+    }
   }
 }

@@ -1,6 +1,5 @@
 # todo
 
-- fix edge case for suggested posts since they're not being blocked rn
 - have types for api calls for within the extension for content background comms
 - have shared types for the api calls from web to extension
 - mock api calls from web to extension

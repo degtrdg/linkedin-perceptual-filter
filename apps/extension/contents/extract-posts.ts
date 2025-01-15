@@ -6,7 +6,6 @@ export const config: PlasmoCSConfig = {
 }
 
 interface PostData {
-  userAndContext?: string
   actorName?: string
   actorDescription?: string
   text?: string
@@ -25,13 +24,6 @@ function extractPosts() {
   postContainers.forEach((container, index) => {
     console.log(`Processing post ${index + 1}...`)
     const data: PostData = {}
-
-    // user + context info
-    const header = container.querySelector<HTMLElement>(
-      ".feed-shared-actor__title"
-    )
-    data.userAndContext = header?.innerText?.trim() || ""
-    console.log(`User and context: ${data.userAndContext}`)
 
     // actor info
     const actorNameElement = container.querySelector<HTMLElement>(

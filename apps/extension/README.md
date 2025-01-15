@@ -1,3 +1,10 @@
+# Extension
+
+ignore the rest of this
+just run pnpm build
+load unpacked extension in chrome
+keep doing that to test sicne the dev env doesn't work with linkedin
+
 This is a [Plasmo extension](https://docs.plasmo.com/) project bootstrapped with [`plasmo init`](https://www.npmjs.com/package/plasmo).
 
 ## Getting Started

@@ -44,7 +44,7 @@ const shouldBlockPost = async (postData: PostData): Promise<boolean> => {
   console.log("No cache found, making API call")
   // Mock API call with random response
   await new Promise((resolve) => setTimeout(resolve, 500)) // Simulate API delay
-  const shouldBlock = Math.random() > 0.5
+  const shouldBlock = true //Math.random() > 0.5
 
   console.log("API response received, should block:", shouldBlock)
   // Cache the result

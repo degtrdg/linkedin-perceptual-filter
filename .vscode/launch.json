@@ -5,11 +5,11 @@
       "type": "chrome",
       "request": "launch",
       "name": "Debug Chrome Extension",
-      "url": "https://linkedin.com",
+      "url": "https://www.linkedin.com",
       "runtimeArgs": [
-        "--load-extension=${workspaceFolder}/extension/build/chrome-mv3-dev"
+        "--load-extension=${workspaceFolder}/apps/extension/build/chrome-mv3-dev"
       ],
-      "webRoot": "${workspaceFolder}/extension",
+      "webRoot": "${workspaceFolder}/apps/extension",
       "sourceMaps": true,
       "userDataDir": true,
       "trace": true

@@ -5,12 +5,12 @@ function IndexPopup() {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-semibold mb-4">
+      <h2 className="mb-4 text-xl font-semibold">
         Welcome to your{" "}
         <a
           href="https://www.linkedin.com"
           target="_blank"
-          className="text-blue-600 hover:text-blue-800 underline">
+          className="text-blue-600 underline hover:text-blue-800">
           LinkedIn
         </a>{" "}
         Extension!
@@ -23,7 +23,7 @@ function IndexPopup() {
       <a
         href="https://docs.plasmo.com"
         target="_blank"
-        className="text-blue-600 hover:text-blue-800 underline">
+        className="text-blue-600 underline hover:text-blue-800">
         View Docs
       </a>
     </div>

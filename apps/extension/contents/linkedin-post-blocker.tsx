@@ -1,8 +1,8 @@
-import { nanoid } from "nanoid/non-secure"
 import type { PlasmoCSConfig } from "plasmo"
 import React from "react"
 import { createRoot } from "react-dom/client"
 
+import { sendToBackground } from "@plasmohq/messaging"
 import { Storage } from "@plasmohq/storage"
 
 export const config: PlasmoCSConfig = {
@@ -21,6 +21,8 @@ interface PostData {
   reactions?: string
   comments?: string
   reposts?: string
+  category?: string
+  explanation?: string
 }
 
 // Create a hash from post data to use as identifier
@@ -56,9 +58,11 @@ const shouldBlockPost = async (postData: PostData): Promise<boolean> => {
 const CoverElement: React.FC<{
   postId: string
   reason: string
+  category: string
+  explanation: string
   onUnmute: () => void
-}> = ({ postId, reason, onUnmute }) => {
-  console.log("Rendering cover element for post:", postId)
+}> = ({ postId, reason, category, explanation, onUnmute }) => {
+  console.log("Rendering cover element for post:")
   return (
     <div
       style={{
@@ -68,6 +72,7 @@ const CoverElement: React.FC<{
         right: 0,
         bottom: 0,
         backgroundColor: "rgba(255, 255, 255, 0.95)",
+        backdropFilter: "blur(10px)",
         padding: "20px",
         display: "flex",
         flexDirection: "column",
@@ -76,7 +81,16 @@ const CoverElement: React.FC<{
         zIndex: 10
       }}>
       <p style={{ marginBottom: "15px", textAlign: "center" }}>
-        This post was hidden because: {reason}
+        This post was categorized as: <strong>{category}</strong>
+      </p>
+      <p
+        style={{
+          marginBottom: "15px",
+          textAlign: "center",
+          fontSize: "0.9em",
+          color: "#666"
+        }}>
+        {explanation}
       </p>
       <button
         onClick={onUnmute}
@@ -94,7 +108,7 @@ const CoverElement: React.FC<{
   )
 }
 
-function processPost(container: Element) {
+async function processPost(container: Element) {
   // Extract post data first
   const data: PostData = {}
 
@@ -117,11 +131,26 @@ function processPost(container: Element) {
     return
   }
 
-  console.log("Processing new post:", postHash)
   processedPosts.add(postHash)
 
-  // Check if post should be blocked
-  shouldBlockPost(data).then(async (shouldBlock) => {
+  try {
+    console.log("Sending message")
+    // Get post categorization
+    const response = await sendToBackground({
+      name: "categorize-post",
+      body: {
+        text: data.text
+      }
+    })
+
+    console.log("Response:", response)
+
+    data.category = response.category
+    data.explanation = response.explanation
+
+    // Check if post should be blocked
+    const shouldBlock = true // For now, show all posts with their categories
+
     if (shouldBlock) {
       // Check if post is already unmuted
       const unmutedPosts = (await storage.get<string[]>("unmutedPosts")) || []
@@ -144,15 +173,21 @@ function processPost(container: Element) {
           coverDiv.remove()
         }
 
-        const reason = "Post contains potentially unwanted content"
-
         const root = createRoot(coverDiv)
         root.render(
-          <CoverElement postId={postHash} reason={reason} onUnmute={unmute} />
+          <CoverElement
+            postId={postHash}
+            reason="Post categorized"
+            category={data.category}
+            explanation={data.explanation}
+            onUnmute={unmute}
+          />
         )
       }
     }
-  })
+  } catch (error) {
+    console.error("Error processing post:", error)
+  }
 }
 
 // Set up observer

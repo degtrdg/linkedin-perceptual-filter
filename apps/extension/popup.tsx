@@ -1,31 +1,28 @@
 import { useState } from "react"
 
+import { sendToBackground } from "@plasmohq/messaging"
+
 function IndexPopup() {
-  const [data, setData] = useState("")
+  const [result, setResult] = useState("")
 
   return (
-    <div className="p-4">
-      <h2 className="mb-4 text-xl font-semibold">
-        Welcome to your{" "}
-        <a
-          href="https://www.linkedin.com"
-          target="_blank"
-          className="text-blue-600 underline hover:text-blue-800">
-          LinkedIn
-        </a>{" "}
-        Extension!
-      </h2>
-      <input
-        onChange={(e) => setData(e.target.value)}
-        value={data}
-        className="w-full p-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <a
-        href="https://docs.plasmo.com"
-        target="_blank"
-        className="text-blue-600 underline hover:text-blue-800">
-        View Docs
-      </a>
+    <div style={{ height: "200px", width: "200px" }}>
+      <button
+        onClick={async () => {
+          console.log("Sending message")
+          const response = await sendToBackground({
+            name: "categorize-post",
+            body: {
+              text: "Hello, world!"
+            }
+          })
+          console.log(response)
+          setResult(response.category)
+        }}>
+        Categorize Post
+      </button>
+
+      <div id="result">{result}</div>
     </div>
   )
 }
